@@ -9,9 +9,9 @@
         <router-link to="/"><h1>Task Performance</h1> </router-link>
       </div>
       <div>
-        <Timer 
+        <Timer
           v-if="this.$route.path === '/task'"
-          v-bind:time="10"
+          v-bind:time="600"
           to="survey"
           from="task"
           class="p-4"

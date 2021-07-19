@@ -29,18 +29,13 @@ export default {
   },
   methods: {
     async submit() {
-      await axios.put(
-        `/api/${this.$root.$data.participant._id}/taskData/`,
-        {
-          dataEntries: this.$root.$data.participant.dataEntries,
-          imageSearches: this.$root.$data.participant.imageSearches,
-        }
+      await axios.put(`/api/${this.$root.$data.participant._id}/taskData/`, {
+        dataEntries: this.$root.$data.participant.dataEntries,
+        imageSearches: this.$root.$data.participant.imageSearches,
+      });
+      window.location.replace(
+        "https://byu.az1.qualtrics.com/jfe/form/SV_0TlirmqjRR0PZv8"
       );
-      // this.$router.push({
-      //   path: "/survey",
-      //   // query: { from: this.from, to: this.to },
-      // });
-      window.location.replace("https://byu.az1.qualtrics.com/jfe/form/SV_0TlirmqjRR0PZv8");
     },
   },
 };

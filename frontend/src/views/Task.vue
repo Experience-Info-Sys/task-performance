@@ -38,7 +38,6 @@ export default {
       try {
         const response = await axios.get(`/api/task/${this.taskName}`);
         this.taskId = response.data._id;
-        console.log(this.taskId);
       } catch (error) {
         console.log(error);
       }

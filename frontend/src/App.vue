@@ -14,7 +14,7 @@
           v-bind:time="600"
           to="survey"
           from="task"
-          class="p-4"
+          class="p-3"
         />
       </div>
     </div>
@@ -23,8 +23,6 @@
 </template>
 
 <script>
-import axios from "axios";
-
 import Timer from "@/components/Timer.vue";
 
 export default {
@@ -34,16 +32,6 @@ export default {
   computed: {
     user() {
       return this.$root.$data.user;
-    },
-  },
-  methods: {
-    async logout() {
-      try {
-        await axios.delete("/api/users");
-        this.$root.$data.user = null;
-      } catch (error) {
-        this.$root.$data.user = null;
-      }
     },
   },
 };

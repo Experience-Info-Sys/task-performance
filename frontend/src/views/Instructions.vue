@@ -2,7 +2,7 @@
   <div
     class="w-11/12 md:w-1/2 mx-auto rounded-md shadow-lg bg-blue-200 flex flex-col"
   >
-    <A v-if="AorB" />
+    <A v-if="AorB == 'A'" />
     <B v-else />
     <div class="flex justify-center mb-2">
       <button
@@ -32,13 +32,13 @@ export default {
       AorB: -1,
     };
   },
-  created() {
-    this.AorB = Math.random() < 0.5;
+  async created() {
+    this.AorB = this.$root.$data.participant.instructionSetAorB;
   },
   methods: {
     // We need on post method for the consent. If they do not consent there is no study to be completed.
     async next() {
-      if (!this.AorB) {
+      if (this.AorB === "B") {
         Swal.fire({
           title: "ASAP",
           html:

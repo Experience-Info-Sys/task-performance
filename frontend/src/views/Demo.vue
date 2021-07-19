@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-11/12 md:w-1/2 mx-auto rounded-md shadow-lg bg-blue-50 flex flex-col mb-8"
+    class="w-11/12 md:w-1/2 mx-auto rounded-md shadow-lg bg-blue-200 flex flex-col mb-8"
   >
     <div class="p-2">
       <h1>Demo</h1>

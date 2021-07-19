@@ -1,8 +1,9 @@
 <template>
   <div class="flex flex-col">
-    <InfoCard :employee="currentEmployee" />
+    <InfoCard class="mb-4" :employee="currentEmployee" />
+    <h3 class="pb-4">Enter the above data exactly as written.</h3>
     <!-- <form > -->
-    <div class="form text-right mx-auto bg-blue-200 rounded-md shadow-lg">
+    <div class="form text-right mx-auto bg-blue-300 rounded-md shadow-lg">
       <div class="row">
         <label for="name">Name: </label>
         <input
@@ -60,15 +61,19 @@
           id="zip_code"
           type="text"
           v-model="zip_code"
+          @keyup.enter="getNext()"
         />
       </div>
     </div>
-    <button
-      @click.prevent="getNext"
-      class="p-2 w-36 bg-blue-900 hover:bg-blue-800 text-white rounded-3xl shadow-lg focus:outline-none transition duration-150 ease-in-out transform active:-translate-y-1 active:scale-95 mx-auto my-4"
-    >
-      Next
-    </button>
+
+    <div class="mx-auto my-4">
+      <button
+        @click.prevent="getNext"
+        class="p-2 w-36 bg-blue-900 hover:bg-blue-800 text-white rounded-3xl shadow-lg focus:outline-none transition duration-150 ease-in-out transform active:-translate-y-1 active:scale-95"
+      >
+        Next
+      </button>
+    </div>
   </div>
 </template>
 
@@ -91,7 +96,6 @@ input {
 
 <script>
 import InfoCard from "./InfoCard.vue";
-import axios from "axios";
 export default {
   name: "DataEntry",
   components: {
@@ -109,10 +113,6 @@ export default {
       state: "",
       zip_code: "",
     };
-  },
-  created: async function () {
-    const response = await axios.get(`/api/task${this.$route.path}`);
-    this.task = response.data;
   },
   computed: {
     currentEmployee() {
@@ -156,6 +156,7 @@ export default {
       this.job = "";
       this.state = "";
       this.zip_code = "";
+      this.$root.$data.entryCount++;
     },
   },
 };

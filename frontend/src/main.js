@@ -8,11 +8,13 @@ Vue.config.productionTip = false;
 
 const data = {
   user: Object,
-  participant: Object, // email, dataEntries, imageSearches
+  participant: Object, // email, instructionSetAorB dataEntries, imageSearches
   employeeInfo: mock,
-  currentID: 0,
+  currentID: 500,
   imageOrder: [],
   imageIndex: 0,
+  imgCount: 0,
+  entryCount: 0,
   newDataEntry(task, first, last, job, dept, address, city, state, zip) {
     this.currentID++;
     this.participant.dataEntries.push({

@@ -1,5 +1,5 @@
 {
-  "name": "isee_api",
+  "name": "task-performance-backend",
   "version": "1.0.0",
   "description": "api for collecting isee data in a backend database",
   "main": "server.js",

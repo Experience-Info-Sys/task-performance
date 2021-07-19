@@ -33,13 +33,14 @@ const dataEntrySchema = new mongoose.Schema({
 const imageSearchSchema = new mongoose.Schema({
   imageNumber: Number,
   imageOrientation: String,
-  hasContraband: Boolean,
+  bagIsSafe: Boolean,
 });
 
 const participantDataSchema = new mongoose.Schema({
   dataEntries: [dataEntrySchema],
   imageSearches: [imageSearchSchema],
   email: String,
+  instructionSetAorB: String,
 });
 
 const ParticipantData = mongoose.model(
@@ -51,8 +52,11 @@ const ParticipantData = mongoose.model(
  * participant data endpoints
  *******************************/
 app.post("/api/data", async (req, res) => {
+  const AorB = (Math.random() < 0.5) ? "A" : "B";
+  console.log(AorB);
   const participant = new ParticipantData({
     email: req.body.email,
+    instructionSetAorB: AorB,
   });
   try {
     await participant.save();

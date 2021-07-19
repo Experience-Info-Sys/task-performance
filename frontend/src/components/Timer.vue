@@ -1,5 +1,5 @@
 <template>
-  <div class="text-6xl font-extrabold text-red-700">
+  <div class="text-5xl font-extrabold text-red-700">
     {{ Math.floor(timerCount / 60) }}:{{ ("0" + (timerCount % 60)).slice(-2) }}
   </div>
 </template>

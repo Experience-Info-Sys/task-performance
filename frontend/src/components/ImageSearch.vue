@@ -1,6 +1,10 @@
 <template>
-  <div class="felx flex-col m-2 bg-blue-200 shadow-lg rounded-md">
-    <div class="bg-blue-300 rounded-t-md py-2">
+  <div class="felx flex-col m-2 bg-blue-300 shadow-lg rounded-md">
+    <div class="font-bold bg-blue-900 rounded-t-md text-white px-4 py-1 w-full">
+      Completed: {{ this.$root.$data.imgCount }}
+    </div>
+    <div class="bg-blue-300 py-2">
+      <h3>Guns and knives are not allowed.</h3>
       <h1 class="text-2xl font-bold">Is This Bag Safe?</h1>
     </div>
     <div class="flex items-center justify-center">
@@ -12,19 +16,19 @@
         "
         :class="rotation"
         style="height: 30rem; width: 30rem"
-        class="p-4 transform"
+        class="pb-4 transform"
       />
     </div>
     <div class="bg-blue-300 rounded-b-md">
       <button
         class="p-1 mx-2 w-36 bg-red-700 hover:bg-red-600 text-white rounded-3xl shadow-lg focus:outline-none transition duration-150 ease-in-out transform active:-translate-y-1 active:scale-95 my-2"
-        @click="nextImage(true)"
+        @click="nextImage(false)"
       >
         No
       </button>
       <button
         class="p-1 mx-2 w-36 bg-green-600 hover:bg-green-500 text-white rounded-3xl shadow-lg focus:outline-none transition duration-150 ease-in-out transform active:-translate-y-1 active:scale-95 my-2"
-        @click="nextImage(false)"
+        @click="nextImage(true)"
       >
         Yes
       </button>
@@ -33,7 +37,6 @@
 </template>
 
 <script>
-import axios from "axios";
 export default {
   name: "ImageSearch",
   data() {
@@ -47,8 +50,6 @@ export default {
     if (this.$root.$data.imageOrder.length === 0) {
       this.shuffleArray(52);
     }
-    const response = await axios.get(`/api/task${this.$route.path}`);
-    this.task = response.data;
   },
   methods: {
     shuffleArray(size) {
@@ -69,12 +70,12 @@ export default {
     randomOrientation() {
       this.rotation = this.angles[Math.floor(Math.random() * 4)];
     },
-    nextImage(contrabandPresent) {
+    nextImage(safetyChecked) {
       this.$root.$data.participant.imageSearches.push({
         task: this.task,
         imageNumber: this.$root.$data.imageOrder[this.$root.$data.imageIndex],
         imageOrientation: this.rotation,
-        hasContraband: contrabandPresent,
+        bagIsSafe: safetyChecked,
       });
       this.$root.$data.imageIndex++;
       if (this.$root.$data.imageIndex % 52 === 0) {
@@ -82,6 +83,7 @@ export default {
         this.$root.$data.imageIndex = 0;
       }
       this.randomOrientation();
+      this.$root.$data.imgCount++;
     },
   },
 };

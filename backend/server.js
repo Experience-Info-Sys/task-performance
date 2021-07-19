@@ -1,10 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
-// const async = require("async");
-// const { response } = require("express");
-const cookieParser = require("cookie-parser");
-const cookieSession = require("cookie-session");
-const users = require("./users.js");
+// const cookieParser = require("cookie-parser");
+// const cookieSession = require("cookie-session");
+// const users = require("./users.js");
 
 const app = express();
 
@@ -16,60 +14,60 @@ app.use(
   })
 );
 
-app.use(cookieParser());
-app.use(
-  cookieSession({
-    name: "session",
-    keys: ["secretValue"],
-    cookie: {
-      maxAge: 3 * 60 * 60 * 1000, // 3 hours
-    },
-  })
-);
+// app.use(cookieParser());
+// app.use(
+//   cookieSession({
+//     name: "session",
+//     keys: ["secretValue"],
+//     cookie: {
+//       maxAge: 3 * 60 * 60 * 1000, // 3 hours
+//     },
+//   })
+// );
 
 
-mongoose.connect("mongodb://localhost:27017/explore_info_sys", {
+mongoose.connect("mongodb://localhost:27017/task_performance", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
 });
 
-// Task Schema
-const taskSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    unique: true,
-    required: true,
-    dropDups: true,
-  },
-});
+// // Task Schema
+// const taskSchema = new mongoose.Schema({
+//   name: {
+//     type: String,
+//     unique: true,
+//     required: true,
+//     dropDups: true,
+//   },
+// });
 
-const Task = mongoose.model("Task", taskSchema);
+// const Task = mongoose.model("Task", taskSchema);
 
-const answersSchema = new mongoose.Schema({
-  answer: String, // a list of answer objects with {id, string}
-  number: Number,
-});
+// const answersSchema = new mongoose.Schema({
+//   answer: String, // a list of answer objects with {id, string}
+//   number: Number,
+// });
 
-// Question Schema
-const questionSchema = new mongoose.Schema({
-  task: {
-    type: mongoose.Schema.ObjectId,
-    ref: "Task",
-  },
-  question: String,
-  answers: [answersSchema],
-  correct: Number, // The id of the correct answer
-});
+// // Question Schema
+// const questionSchema = new mongoose.Schema({
+//   task: {
+//     type: mongoose.Schema.ObjectId,
+//     ref: "Task",
+//   },
+//   question: String,
+//   answers: [answersSchema],
+//   correct: Number, // The id of the correct answer
+// });
 
-const Question = mongoose.model("Question", questionSchema);
+// const Question = mongoose.model("Question", questionSchema);
 
 // each of these sub-tasks are associated with a meta-task
 const dataEntrySchema = new mongoose.Schema({
-  task: {
-    type: mongoose.Schema.ObjectId,
-    ref: "Task",
-  },
+  // task: {
+  //   type: mongoose.Schema.ObjectId,
+  //   ref: "Task",
+  // },
   id: Number,
   first_name: String,
   last_name: String,
@@ -82,29 +80,29 @@ const dataEntrySchema = new mongoose.Schema({
 });
 
 const imageSearchSchema = new mongoose.Schema({
-  task: {
-    type: mongoose.Schema.ObjectId,
-    ref: "Task",
-  },
+  // task: {
+  //   type: mongoose.Schema.ObjectId,
+  //   ref: "Task",
+  // },
   imageNumber: Number,
   imageOrientation: String,
   hasContraband: Boolean,
 });
 
-const surveyResponseSchema = new mongoose.Schema({
-  question: {
-    type: mongoose.Schema.ObjectId,
-    ref: "Question",
-  },
-  participantResponse: answersSchema,
-  // id of the selected answer? // or should I have an answer object?
-});
+// const surveyResponseSchema = new mongoose.Schema({
+//   question: {
+//     type: mongoose.Schema.ObjectId,
+//     ref: "Question",
+//   },
+//   participantResponse: answersSchema,
+//   // id of the selected answer? // or should I have an answer object?
+// });
 
 const participantDataSchema = new mongoose.Schema({
   dataEntries: [dataEntrySchema],
   imageSearches: [imageSearchSchema],
-  surveyAnswers: [surveyResponseSchema],
-  participantId: String,
+  // surveyAnswers: [surveyResponseSchema],
+  email: String,
 });
 
 const ParticipantData = mongoose.model(
@@ -113,182 +111,182 @@ const ParticipantData = mongoose.model(
 );
 
 
-app.use("/api/users", users.routes);
-const User = users.model;
-const validUser = users.valid;
+// app.use("/api/users", users.routes);
+// const User = users.model;
+// const validUser = users.valid;
 
 
 
-// API endpoint for creating tasks
-app.post("/api/tasks", validUser, async (req, res) => {
-  const task = new Task({
-    name: req.body.name,
-  });
-  console.log(task);
-  try {
-    await task.save();
-    res.send(task);
-  } catch (error) {
-    console.log(error);
-    res.sendStatus(500);
-  }
-});
+// // API endpoint for creating tasks
+// app.post("/api/tasks", validUser, async (req, res) => {
+//   const task = new Task({
+//     name: req.body.name,
+//   });
+//   console.log(task);
+//   try {
+//     await task.save();
+//     res.send(task);
+//   } catch (error) {
+//     console.log(error);
+//     res.sendStatus(500);
+//   }
+// });
 
-// Endpoint for getting all tasks
-app.get("/api/tasks", async (req, res) => {
-  try {
-    let tasks = await Task.find();
-    res.send(tasks);
-  } catch (error) {
-    console.lot(error);
-    res.sendStatus(500);
-  }
-});
+// // Endpoint for getting all tasks
+// app.get("/api/tasks", async (req, res) => {
+//   try {
+//     let tasks = await Task.find();
+//     res.send(tasks);
+//   } catch (error) {
+//     console.lot(error);
+//     res.sendStatus(500);
+//   }
+// });
 
-// Updating tasks
-app.put("/api/tasks/:taskId", validUser, async (req, res) => {
-  try {
-    let task = await Task.findOne({ _id: req.params.taskId });
-    if (!task) {
-      res.sendStatus(404);
-      return;
-    }
-    task.name = req.body.name;
-    await task.save();
-    res.status(200).send(task);
-  } catch (error) {
-    console.log(error);
-    res.sendStatus(500);
-  }
-});
+// // Updating tasks
+// app.put("/api/tasks/:taskId", validUser, async (req, res) => {
+//   try {
+//     let task = await Task.findOne({ _id: req.params.taskId });
+//     if (!task) {
+//       res.sendStatus(404);
+//       return;
+//     }
+//     task.name = req.body.name;
+//     await task.save();
+//     res.status(200).send(task);
+//   } catch (error) {
+//     console.log(error);
+//     res.sendStatus(500);
+//   }
+// });
 
-// Deleting tasks
-app.delete("/api/tasks/:taskId", validUser, async (req, res) => {
-  try {
-    console.log(req.params.taskId);
-    let task = await Task.findOne({ _id: req.params.taskId });
-    if (!task) {
-      res.sendStatus(404);
-      return;
-    }
-    await task.delete();
-    res.sendStatus(200);
-  } catch (error) {
-    console.log(error);
-  }
-});
+// // Deleting tasks
+// app.delete("/api/tasks/:taskId", validUser, async (req, res) => {
+//   try {
+//     console.log(req.params.taskId);
+//     let task = await Task.findOne({ _id: req.params.taskId });
+//     if (!task) {
+//       res.sendStatus(404);
+//       return;
+//     }
+//     await task.delete();
+//     res.sendStatus(200);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// });
 
-// Endpoint for single task functions. Get task from taskName
-app.get("/api/task/:name", async (req, res) => {
-  let task = await Task.findOne({ name: req.params.name });
-  if (!task) {
-    res.sendStatus(404);
-    return;
-  }
-  res.send(task);
-});
+// // Endpoint for single task functions. Get task from taskName
+// app.get("/api/task/:name", async (req, res) => {
+//   let task = await Task.findOne({ name: req.params.name });
+//   if (!task) {
+//     res.sendStatus(404);
+//     return;
+//   }
+//   res.send(task);
+// });
 
-// Add Question
-app.post("/api/survey/:name/question", validUser, async (req, res) => {
-  try {
-    let task = await Task.findOne({ name: req.params.name });
-    if (!task) {
-      res.sendStatus(404);
-      console.log(task);
-      return;
-    }
-    let question = new Question({
-      task: task,
-      question: req.body.question,
-      answers: req.body.answers,
-    });
-    await question.save();
-    res.send(question);
-  } catch (error) {
-    console.log(error);
-    res.sendStatus(500);
-  }
-});
+// // Add Question
+// app.post("/api/survey/:name/question", validUser, async (req, res) => {
+//   try {
+//     let task = await Task.findOne({ name: req.params.name });
+//     if (!task) {
+//       res.sendStatus(404);
+//       console.log(task);
+//       return;
+//     }
+//     let question = new Question({
+//       task: task,
+//       question: req.body.question,
+//       answers: req.body.answers,
+//     });
+//     await question.save();
+//     res.send(question);
+//   } catch (error) {
+//     console.log(error);
+//     res.sendStatus(500);
+//   }
+// });
 
-// get questions
-app.get("/api/survey/:name/questions", async (req, res) => {
-  try {
-    let task = await Task.findOne({ name: req.params.name });
-    if (!task) {
-      res.status(404).send("No survey with that id");
-      return;
-    }
-    // console.log(task);
-    let questions = await Question.find({ task: task });
-    // console.log(questions);
-    res.send(questions);
-  } catch (error) {
-    console.log(error);
-    res.sendStatus(500);
-  }
-});
+// // get questions
+// app.get("/api/survey/:name/questions", async (req, res) => {
+//   try {
+//     let task = await Task.findOne({ name: req.params.name });
+//     if (!task) {
+//       res.status(404).send("No survey with that id");
+//       return;
+//     }
+//     // console.log(task);
+//     let questions = await Question.find({ task: task });
+//     // console.log(questions);
+//     res.send(questions);
+//   } catch (error) {
+//     console.log(error);
+//     res.sendStatus(500);
+//   }
+// });
 
-app.delete("/api/survey/question/:questionId", validUser, async (req, res) => {
-  try {
-    console.log(req.params.questionId);
-    let question = await Question.findOne({ _id: req.params.questionId });
-    if (!question) {
-      res.sendStatus(404);
-      return;
-    }
-    await question.delete();
-    res.sendStatus(200);
-  } catch (error) {
-    console.log(error);
-  }
-});
+// app.delete("/api/survey/question/:questionId", validUser, async (req, res) => {
+//   try {
+//     console.log(req.params.questionId);
+//     let question = await Question.findOne({ _id: req.params.questionId });
+//     if (!question) {
+//       res.sendStatus(404);
+//       return;
+//     }
+//     await question.delete();
+//     res.sendStatus(200);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// });
 
-app.delete(
-  "/api/survey/question/:questionId/answer/:answerNum", validUser,
-  async (req, res) => {
-    try {
-      console.log(req.params.questionId);
-      let question = await Question.findOne({ _id: req.params.questionId });
-      if (!question) {
-        res.sendStatus(404);
-        return;
-      }
-      question.answers = question.answers.filter(
-        (answer) => answer.number != req.params.answerNum
-      );
-      await question.save();
-      // await question.delete();
-      res.sendStatus(200);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-);
+// app.delete(
+//   "/api/survey/question/:questionId/answer/:answerNum", validUser,
+//   async (req, res) => {
+//     try {
+//       console.log(req.params.questionId);
+//       let question = await Question.findOne({ _id: req.params.questionId });
+//       if (!question) {
+//         res.sendStatus(404);
+//         return;
+//       }
+//       question.answers = question.answers.filter(
+//         (answer) => answer.number != req.params.answerNum
+//       );
+//       await question.save();
+//       // await question.delete();
+//       res.sendStatus(200);
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   }
+// );
 
-// edit question
-app.put("/api/survey/question/:questionId", validUser, async (req, res) => {
-  try {
-    let question = await Question.findOne({ _id: req.params.questionId });
-    if (!question) {
-      res.sendStatus(404);
-      return;
-    }
-    question.question = req.body.question;
-    question.answers = req.body.answers;
-    await question.save();
-    res.status(200).send(question);
-  } catch (error) {
-    console.log(error);
-    res.sendStatus(500);
-  }
-});
+// // edit question
+// app.put("/api/survey/question/:questionId", validUser, async (req, res) => {
+//   try {
+//     let question = await Question.findOne({ _id: req.params.questionId });
+//     if (!question) {
+//       res.sendStatus(404);
+//       return;
+//     }
+//     question.question = req.body.question;
+//     question.answers = req.body.answers;
+//     await question.save();
+//     res.status(200).send(question);
+//   } catch (error) {
+//     console.log(error);
+//     res.sendStatus(500);
+//   }
+// });
 
-/**********
+/*******************************
  * participant data endpoints
- ***********/
+ *******************************/
 app.post("/api/data", async (req, res) => {
   const participant = new ParticipantData({
-    participantId: req.body.participantId,
+    email: req.body.email,
   });
   try {
     await participant.save();
@@ -301,10 +299,10 @@ app.post("/api/data", async (req, res) => {
 
 app.get("/api/user/test", async (req, res) => {
   try {
-    let user = await ParticipantData.findOne({ participantId: "test" });
+    let user = await ParticipantData.findOne({ email: "test" });
     if (!user) {
       let test = new ParticipantData({
-        participantId: "test",
+        email: "test",
       });
       await test.save();
       res.send(test);
@@ -334,14 +332,14 @@ app.put("/api/:id/taskData", async (req, res) => {
   }
 });
 
-app.put("/api/data/:participantId/surveyAnswers", async (req, res) => {
-  if (req.params.participantId === "undefined") {
+app.put("/api/data/:email/surveyAnswers", async (req, res) => {
+  if (req.params.email === "undefined") {
     res.status(404).send("participant undefined");
     console.log("I'm undefined");
     return;
   }
   try {
-    let user = await ParticipantData.findOne({ _id: req.params.participantId });
+    let user = await ParticipantData.findOne({ _id: req.params.email });
     if (!user) {
       res.sendStatus(404);
       return;

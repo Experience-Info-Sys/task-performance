@@ -4,66 +4,70 @@ const argon2 = require("argon2");
 
 const router = express.Router();
 
+// const userSchema = new mongoose.Schema({
+//   firstName: String,
+//   lastName: String,
+//   username: String,
+//   password: String,
+//   role: {
+//     type: String,
+//     default: "",
+//   }
+// });
+
 const userSchema = new mongoose.Schema({
-  firstName: String,
-  lastName: String,
-  username: String,
-  password: String,
-  role: {
-    type: String,
-    default: "",
-  }
+  email: String,
 });
 
-// This is a hook that will be called before a user record is saved,
-// allowing us to be sure to salt and hash the password first.
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
-    return next();
-  }
-  try {
-    // The argon2.hash() function generates a hash of the password we supply.
-    // Behind the scenes it also generates a random salt for the user. The return value,
-    //which we call a hash, also includes the salt and various configuration parameters.
-    //This allows argon2 to hide a lot of the details from us to make security easier.
-    //
-    // Note that this function is middleware for Mongoose. We use the next parameter
-    //to tell Mongoose to move on to the next piece of the middleware.
-    const hash = await argon2.hash(this.password);
-    this.password = hash;
-    next();
-  } catch (error) {
-    console.log(error);
-    next(error);
-  }
-});
+// // This is a hook that will be called before a user record is saved,
+// // allowing us to be sure to salt and hash the password first.
+// userSchema.pre("save", async function (next) {
+//   if (!this.isModified("password")) {
+//     return next();
+//   }
+//   try {
+//     // The argon2.hash() function generates a hash of the password we supply.
+//     // Behind the scenes it also generates a random salt for the user. The return value,
+//     //which we call a hash, also includes the salt and various configuration parameters.
+//     //This allows argon2 to hide a lot of the details from us to make security easier.
+//     //
+//     // Note that this function is middleware for Mongoose. We use the next parameter
+//     //to tell Mongoose to move on to the next piece of the middleware.
+//     const hash = await argon2.hash(this.password);
+//     this.password = hash;
+//     next();
+//   } catch (error) {
+//     console.log(error);
+//     next(error);
+//   }
+// });
 
-// This is a method that we can call on User objects to compare the hash of the
-// password the browser sends with the has of the user's true password stored in
-// the database.
-userSchema.methods.comparePassword = async function (password) {
-  try {
-    // note that we supply the hash stored in the database (first argument) and
-    // the plaintext password. argon2 will do the hashing and salting and
-    // comparison for us.
-    // Remember the hashed and salted password in the database includes the salt, so
-    // this function has all it needs to do the comparison.
-    const isMatch = await argon2.verify(this.password, password);
-    return isMatch;
-  } catch (error) {
-    return false;
-  }
-};
+// // This is a method that we can call on User objects to compare the hash of the
+// // password the browser sends with the has of the user's true password stored in
+// // the database.
+// userSchema.methods.comparePassword = async function (password) {
+//   try {
+//     // note that we supply the hash stored in the database (first argument) and
+//     // the plaintext password. argon2 will do the hashing and salting and
+//     // comparison for us.
+//     // Remember the hashed and salted password in the database includes the salt, so
+//     // this function has all it needs to do the comparison.
+//     const isMatch = await argon2.verify(this.password, password);
+//     return isMatch;
+//   } catch (error) {
+//     return false;
+//   }
+// };
 
-// This is a method that will be called automatically any time we convert a user
-// object to JSON. It deletes the password hash from the object. This ensures
-// that we never send password hashes over our API, to avoid giving away
-// anything to an attacker.
-userSchema.methods.toJSON = function () {
-  let obj = this.toObject();
-  delete obj.password;
-  return obj;
-};
+// // This is a method that will be called automatically any time we convert a user
+// // object to JSON. It deletes the password hash from the object. This ensures
+// // that we never send password hashes over our API, to avoid giving away
+// // anything to an attacker.
+// userSchema.methods.toJSON = function () {
+//   let obj = this.toObject();
+//   delete obj.password;
+//   return obj;
+// };
 
 const User = mongoose.model("User", userSchema);
 

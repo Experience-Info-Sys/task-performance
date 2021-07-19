@@ -8,24 +8,12 @@ Vue.config.productionTip = false;
 
 const data = {
   user: Object,
-  participant: Object, // participantId, dataEntries, imageSearches, surveyAnswers
+  participant: Object, // email, dataEntries, imageSearches
   employeeInfo: mock,
   currentID: 0,
   imageOrder: [],
   imageIndex: 0,
-  newDataEntry(
-    task,
-    first,
-    last,
-    // email,
-    job,
-    dept,
-    address,
-    city,
-    state,
-    zip
-    // ssn
-    ) {
+  newDataEntry(task, first, last, job, dept, address, city, state, zip) {
     this.currentID++;
     this.participant.dataEntries.push({
       task: task,
@@ -34,12 +22,10 @@ const data = {
       last_name: last,
       job: job,
       department: dept,
-      // email: email,
       address: address,
       city: city,
       state: state,
       zip_code: zip,
-      // ssn: ssn,
     });
   },
 };

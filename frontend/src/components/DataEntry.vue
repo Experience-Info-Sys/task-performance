@@ -27,13 +27,6 @@
           type="text"
           v-model="job"
         />
-        <!-- <label for="email">Email: </label>
-        <input
-          class="rounded-lg focus:outline-none focus:ring focus:border-blue-300 shadow-inner p-1"
-          id="email"
-          type="email"
-          v-model="email"
-        /> -->
       </div>
       <div class="row">
         <label for="address">Address: </label>
@@ -69,17 +62,7 @@
           v-model="zip_code"
         />
       </div>
-      <!-- <div class="row">
-        <label for="ssn">SSN: </label>
-        <input
-          class="rounded-lg focus:outline-none focus:ring focus:border-blue-300 shadow-inner p-1"
-          id="ssn"
-          type="text"
-          v-model="ssn"
-        />
-      </div> -->
     </div>
-    <!-- </form> -->
     <button
       @click.prevent="getNext"
       class="p-2 w-36 bg-blue-900 hover:bg-blue-800 text-white rounded-3xl shadow-lg focus:outline-none transition duration-150 ease-in-out transform active:-translate-y-1 active:scale-95 mx-auto my-4"
@@ -164,16 +147,13 @@ export default {
         this.city,
         this.state,
         this.zip_code
-        // this.ssn
       );
       this.name = "";
       this.address = "";
       this.city = "";
       this.department = "";
-      // this.email = "";
       this.id = "";
       this.job = "";
-      // this.ssn = "";
       this.state = "";
       this.zip_code = "";
     },

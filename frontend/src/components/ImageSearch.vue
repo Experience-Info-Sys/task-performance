@@ -1,5 +1,8 @@
 <template>
   <div class="felx flex-col m-2 bg-blue-200 shadow-lg rounded-md">
+    <div class="bg-blue-300 rounded-t-md py-2">
+      <h1 class="text-2xl font-bold">Is This Bag Safe?</h1>
+    </div>
     <div class="flex items-center justify-center">
       <img
         :src="
@@ -17,13 +20,13 @@
         class="p-1 mx-2 w-36 bg-red-700 hover:bg-red-600 text-white rounded-3xl shadow-lg focus:outline-none transition duration-150 ease-in-out transform active:-translate-y-1 active:scale-95 my-2"
         @click="nextImage(true)"
       >
-        Contraband Present
+        No
       </button>
       <button
         class="p-1 mx-2 w-36 bg-green-600 hover:bg-green-500 text-white rounded-3xl shadow-lg focus:outline-none transition duration-150 ease-in-out transform active:-translate-y-1 active:scale-95 my-2"
         @click="nextImage(false)"
       >
-        No Contraband Present
+        Yes
       </button>
     </div>
   </div>

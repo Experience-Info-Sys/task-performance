@@ -36,10 +36,11 @@ export default {
           imageSearches: this.$root.$data.participant.imageSearches,
         }
       );
-      this.$router.push({
-        path: "/survey",
-        query: { from: this.from, to: this.to },
-      });
+      // this.$router.push({
+      //   path: "/survey",
+      //   // query: { from: this.from, to: this.to },
+      // });
+      window.location.replace("https://byu.az1.qualtrics.com/jfe/form/SV_0TlirmqjRR0PZv8");
     },
   },
 };

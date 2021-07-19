@@ -1,16 +1,10 @@
 <template>
   <div class="p-2 shadow-inner bg-gray-300">
     <div id="content" class="flex items-center justify-evenly px-12 py-4">
-      <DataEntry class="" />
+      <DataEntry />
       <div
         class="flex flex-col w-full md:w-5/12 px-6 items-center justify-center"
       >
-        <Timer
-          v-bind:time="60"
-          to="exit"
-          from="data_with_image_search"
-          class="p-4"
-        />
         <ImageSearch />
       </div>
     </div>
@@ -20,18 +14,15 @@
 <script>
 import axios from "axios";
 // @ is an alias to /src
-import Timer from "@/components/Timer.vue";
 import DataEntry from "@/components/DataEntry.vue";
 import ImageSearch from "@/components/ImageSearch.vue";
-// import Submissions from "@/components/Submissions.vue";
 
 export default {
   name: "Task",
   components: {
-    Timer,
+    // Timer,
     DataEntry,
     ImageSearch,
-    // Submissions,
   },
   data() {
     return {

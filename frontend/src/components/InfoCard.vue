@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div class="font-bold bg-blue-900 rounded-t-md text-white px-4 py-1">
+    <div
+      class="font-bold bg-blue-900 rounded-t-md text-white px-4 py-1"
+      v-bind:class="{ flash: flashing }"
+    >
       Completed: {{ this.$root.$data.entryCount }}
     </div>
     <div
@@ -25,11 +28,53 @@
   </div>
 </template>
 
+<style>
+.flash {
+  animation: flash 0.5s linear infinite;
+}
+
+@keyframes flash {
+  50% {
+    background: #000;
+    color: white;
+  }
+}
+</style>
+
 <script>
 export default {
   name: "InfoCard",
   props: {
     employee: Object,
   },
+  data: function () {
+    return {
+      flashing: false,
+    };
+  },
+  mounted: function () {
+    this.$root.$on("nextData", () => {
+      // wait 30 sec then start flashing
+      setTimeout(() => {
+        this.flashing = true;
+      }, 1000);
+      setTimeout(() => {
+        this.flashing = false;
+      }, 5000);
+    });
+  },
+  // mounted: async function () {
+  //   this.$root.$on("nextData", () => {
+  //     await new Promise(
+  //       setTimeout(() => {
+  //         this.flashing = true;
+  //       }, 2000)
+  //     ).then(() => {
+  //       setTimeout(() => {
+  //         this.flashing = false;
+  //       }, 3000);
+  //     });
+  //   });
+  // },
 };
 </script>

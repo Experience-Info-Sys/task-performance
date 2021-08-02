@@ -8,7 +8,7 @@ Vue.config.productionTip = false;
 
 const data = {
   user: Object,
-  participant: Object, // email, instructionSetAorB dataEntries, imageSearches
+  participant: { dataEntries: [] }, // email, instructionSetAorB dataEntries, imageSearches
   employeeInfo: mock,
   currentID: 500,
   imageOrder: [],

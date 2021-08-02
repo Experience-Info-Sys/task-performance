@@ -157,6 +157,8 @@ export default {
       this.state = "";
       this.zip_code = "";
       this.$root.$data.entryCount++;
+
+      this.$root.$emit("nextData");
     },
   },
 };

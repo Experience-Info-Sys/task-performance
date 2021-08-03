@@ -2,8 +2,26 @@
   <div
     class="w-11/12 md:w-1/2 mx-auto rounded-md shadow-lg bg-blue-200 flex flex-col"
   >
-    <A v-if="AorB == 'A'" />
-    <B v-else />
+    <div class="p-2">
+      <h1>Instructions</h1>
+      <div id="description" class="p-4 text-left">
+        <p class="pb-4">
+          <b
+            >You will have 10 minutes to complete BOTH of the following
+            tasks.</b
+          >
+          You may divide your time any way you like. In order to be compensated
+          for your performance, <b>please do not refresh the page.</b>
+        </p>
+
+        <p class="pb-8">
+          <b>Tasks:</b> You must enter at least <b>30 employee cards </b>and
+          complete <b>100 luggage scan searches</b>.
+        </p>
+
+        <p class="text-center">When you are prepared to begin, click “Next.”</p>
+      </div>
+    </div>
     <div class="flex justify-center mb-2">
       <button
         @click.prevent="next()"
@@ -15,18 +33,17 @@
   </div>
 </template>
 
+<style scoped>
+.swal2-styled.swal2-default-outline:focus {
+  box-shadow: 0 0 0 0 !important;
+}
+</style>
+
 <script>
 import Swal from "sweetalert2";
 
-import A from "@/components/Instructions-A.vue";
-import B from "@/components/Instructions-B.vue";
-
 export default {
   name: "Instructions",
-  components: {
-    A,
-    B,
-  },
   data: function () {
     return {
       AorB: -1,
@@ -36,17 +53,15 @@ export default {
     this.AorB = this.$root.$data.participant.instructionSetAorB;
   },
   methods: {
-    // We need on post method for the consent. If they do not consent there is no study to be completed.
     async next() {
       if (this.AorB === "B") {
         Swal.fire({
-          title: "ASAP",
+          title: "Wait!",
           html:
-            "<p class='text-left pb-4'>Wait! Before you begin, your employer stops by your desk and hands you a stack of 100 luggage scans.</p>" +
-            "<p class='text-left pb-8'>''Please complete these right away. I need both the data entry cards AND these luggage scans in the next 10 minutes.”</p>" +
-            "<p><b>New Task:</b> You must enter at least <b>30 employee cards </b>and<b> 100 luggage scan searches</b>.</p>",
+            "<p class='text-left pb-4'>The <b>tasks will flash randomly</b> throughout the exercise. Please <b>disregard these distractions</b> and divide your time however you'd like.</p>",
           icon: "warning",
           confirmButtonText: "Continue",
+          confirmButtonColor: "#1E3A8A",
         }).then(() => {
           this.$router.push("/task");
         });

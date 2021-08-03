@@ -12,21 +12,21 @@
           type="text"
           v-model="name"
         />
-        <label for="department">Department: </label>
-        <input
-          class="rounded-lg focus:outline-none focus:ring focus:border-blue-300 shadow-inner p-1"
-          id="department"
-          type="text"
-          v-model="department"
-        />
-      </div>
-      <div class="row row-span-full">
         <label for="job">Job: </label>
         <input
           class="rounded-lg focus:outline-none focus:ring focus:border-blue-300 shadow-inner p-1"
           id="job"
           type="text"
           v-model="job"
+        />
+      </div>
+      <div class="row row-span-full">
+        <label for="department">Department: </label>
+        <input
+          class="rounded-lg focus:outline-none focus:ring focus:border-blue-300 shadow-inner p-1"
+          id="department"
+          type="text"
+          v-model="department"
         />
       </div>
       <div class="row">

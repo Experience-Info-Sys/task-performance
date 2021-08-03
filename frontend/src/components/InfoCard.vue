@@ -28,15 +28,14 @@
   </div>
 </template>
 
-<style>
+<style scoped>
 .flash {
-  animation: flash 0.5s linear infinite;
+  animation: flash 0.4s ease-in-out infinite;
 }
 
 @keyframes flash {
   50% {
-    background: #000;
-    color: white;
+    background: yellow;
   }
 }
 </style>
@@ -52,29 +51,24 @@ export default {
       flashing: false,
     };
   },
+  created: async function () {
+    this.flashing = true;
+    await this.timeout(4000);
+    this.flashing = false;
+  },
   mounted: function () {
-    this.$root.$on("nextData", () => {
+    this.$root.$on("nextData", async () => {
       // wait 30 sec then start flashing
-      setTimeout(() => {
-        this.flashing = true;
-      }, 1000);
-      setTimeout(() => {
-        this.flashing = false;
-      }, 5000);
+      await this.timeout(32000);
+      this.flashing = true;
+      await this.timeout(4000);
+      this.flashing = false;
     });
   },
-  // mounted: async function () {
-  //   this.$root.$on("nextData", () => {
-  //     await new Promise(
-  //       setTimeout(() => {
-  //         this.flashing = true;
-  //       }, 2000)
-  //     ).then(() => {
-  //       setTimeout(() => {
-  //         this.flashing = false;
-  //       }, 3000);
-  //     });
-  //   });
-  // },
+  methods: {
+    timeout(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    },
+  },
 };
 </script>

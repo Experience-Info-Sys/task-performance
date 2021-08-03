@@ -3,7 +3,6 @@
     <div class="flex justify-between">
       <div
         class="text-left p-2 flex items-center"
-        v-bind:class="[user ? 'w-1/5' : 'w-full']"
       >
         <img src="@/assets/logo.png" class="h-6 pr-2" />
         <router-link to="/"><h1>Task Performance</h1> </router-link>
@@ -28,11 +27,6 @@ import Timer from "@/components/Timer.vue";
 export default {
   components: {
     Timer,
-  },
-  computed: {
-    user() {
-      return this.$root.$data.user;
-    },
   },
 };
 </script>

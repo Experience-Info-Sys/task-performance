@@ -7,8 +7,7 @@ import mock from "./mock_data";
 Vue.config.productionTip = false;
 
 const data = {
-  user: Object,
-  participant: { dataEntries: [] }, // email, instructionSetAorB dataEntries, imageSearches
+  participant: { dataEntries: [], imageSearches: [] }, // email, instructionSetAorB dataEntries, imageSearches
   employeeInfo: mock,
   currentID: 500,
   imageOrder: [],
